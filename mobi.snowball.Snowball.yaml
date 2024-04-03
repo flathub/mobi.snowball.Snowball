@@ -36,4 +36,4 @@ modules:
     sources:
       - type: git
         url: https://notabug.org/Vandarin/Snowball.git
-        commit: c8387cb741555d84d4b8f08ffc1b5975dc5ab381
+        commit: c96fba5e87e654e2f1d5922395560fb4a61153b0
