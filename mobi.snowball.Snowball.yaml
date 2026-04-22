@@ -1,6 +1,6 @@
 app-id: mobi.snowball.Snowball
 runtime: org.freedesktop.Platform
-runtime-version: '23.08'
+runtime-version: '25.08'
 sdk: org.freedesktop.Sdk
 command: snowball
 rename-icon: snowball
@@ -11,6 +11,10 @@ finish-args:
   - --socket=fallback-x11
   - --share=ipc
   - --device=dri
+cleanup:
+  - /include
+  - /lib/cmake
+  - /lib/pkgconfig
 modules:
   - name: glfw
     buildsystem: cmake-ninja
@@ -28,12 +32,14 @@ modules:
   - name: snowball
     buildsystem: simple
     build-commands:
-      - cc main.c glad_gl.c -Ofast -L/app/lib -lglfw -lm -o snowball
+      - cc SNOWBALL/main.c SNOWBALL/glad_gl.c -Ofast -L/app/lib -lglfw -lm -o snowball
       - install -Dm 0755 snowball -t ${FLATPAK_DEST}/bin
-      - install -Dm 0644 flatpak/snowball.desktop ${FLATPAK_DEST}/share/applications/snowball.desktop
-      - install -Dm 0644 flatpak/snowball.appdata.xml ${FLATPAK_DEST}/share/metainfo/snowball.appdata.xml
-      - install -Dm 0644 flatpak/snowball.png ${FLATPAK_DEST}/share/icons/hicolor/128x128/apps/snowball.png
+      - install -Dm 0644 SNOWBALL/flatpak/snowball.desktop ${FLATPAK_DEST}/share/applications/snowball.desktop
+      - install -Dm 0644 SNOWBALL/flatpak/snowball.appdata.xml ${FLATPAK_DEST}/share/metainfo/snowball.appdata.xml
+      - install -Dm 0644 SNOWBALL/flatpak/snowball.png ${FLATPAK_DEST}/share/icons/hicolor/128x128/apps/snowball.png
     sources:
       - type: git
-        url: https://notabug.org/Vandarin/Snowball.git
-        commit: c96fba5e87e654e2f1d5922395560fb4a61153b0
+        url: https://github.com/mrbid/NotABug-Mirror.git
+        commit: 9783867161be015ec0f46c9ec19c758716d566f0
+      - type: patch
+        path: fix-appdata.patch
